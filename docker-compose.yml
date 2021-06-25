@@ -1,0 +1,19 @@
+version: '3'
+services: 
+    web:
+        build: ./.devcontainer
+        volumes: 
+            - .:/workspace:cached
+        command: /bin/sh -c "while sleep 1000; do :; done"
+        links: 
+            - api
+    api:
+        build: ./src/api/.devcontainer
+        volumes: 
+            - .:/workspace:cached
+        command: /bin/sh -c "while sleep 1000; do :; done"
+    func:
+        build: ./src/func/.devcontainer
+        volumes: 
+            - .:/workspace:cached
+        command: /bin/sh -c "while sleep 1000; do :; done"
