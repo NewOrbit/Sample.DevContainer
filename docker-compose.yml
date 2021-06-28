@@ -12,9 +12,9 @@ services:
         volumes: 
             - .:/workspace:cached
         command: /bin/sh -c "while sleep 1000; do :; done"
-        # ports: 
-        #     - 6001:6001
-        #     - 6002:6002
+        ports: 
+            - 6001:6001
+            - 6002:6002
     func:
         build: ./src/func/.devcontainer
         volumes: 

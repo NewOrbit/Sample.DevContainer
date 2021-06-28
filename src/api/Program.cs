@@ -21,7 +21,7 @@ namespace api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:6001", "https://localhost:6002");
+                    webBuilder.UseUrls("http://0.0.0.0:6001", "https://0.0.0.0:6002");
                 });
     }
 }
