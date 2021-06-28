@@ -4,7 +4,7 @@
 	"name": "API",
 	"dockerComposeFile": ["../../../docker-compose.yml"],
 	"service": "api",
-	"workspaceFolder": "/workspace",
+	"workspaceFolder": "/workspace/src/api",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
@@ -15,9 +15,9 @@
 	"extensions": [
 		"ms-dotnettools.csharp"
 	],
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [6001, 6002],
+	// "forwardPorts": [],
+	// "appPort": [6001, 6002],
 
 	// [Optional] To reuse of your local HTTPS dev cert:
 	//
