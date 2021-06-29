@@ -7,6 +7,9 @@ services:
         command: /bin/sh -c "while sleep 1000; do :; done"
         links: 
             - api
+        ports:
+            - 5000:5000
+            - 5001:5001
     api:
         build: ./src/api/.devcontainer
         volumes: 
