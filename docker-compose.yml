@@ -23,3 +23,5 @@ services:
         volumes: 
             - .:/workspace:cached
         command: /bin/sh -c "while sleep 1000; do :; done"
+        ports:
+            - 7071:7071
