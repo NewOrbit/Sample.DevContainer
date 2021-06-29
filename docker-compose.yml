@@ -18,6 +18,10 @@ services:
         ports: 
             - 6001:6001
             - 6002:6002
+        links:
+            - func
+            - azurite
+            - cosmos
     func:
         build: ./src/func/.devcontainer
         volumes: 
@@ -25,3 +29,20 @@ services:
         command: /bin/sh -c "while sleep 1000; do :; done"
         ports:
             - 7071:7071
+        links:
+            - azurite
+            - cosmos
+    azurite:
+        image: "mcr.microsoft.com/azure-storage/azurite"
+        ports:
+            - "10000:10000"
+            - "10001:10001"
+            - "10002:10002"
+    cosmos:
+        image: "mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator"
+        ports:
+            - "8081:8081"
+            - "10251:10251"
+            - "10252:10252" 
+            - "10253:10253"
+            - "10254:10254"

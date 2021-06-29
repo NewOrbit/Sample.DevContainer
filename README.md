@@ -1,6 +1,11 @@
 This is an example of using multiple different services in devcontainers for local debugging and having them talk to each other. There are a number of things to consider to make this a pleasant development experience.  
 The focus here is on Dotnet and Azure, but most of it as applicable to other languages.
 
+**WORK IN PROGRESS**
+*Right now stuck on how to get the CosmosDB linux emulator working without changing the IP address to the local machine* Because
+- More than one container needs to access CosmosDB
+- More than one developer will work on this and the idea is to minimize the manual work for each dev.
+
 # Using this example
 TBD...
 In this solution, the "web" project is the main one. I have therefore put it's devcontainer.json and Dockerfile in the root in order to prompt the "re-open in dev containers". This will also start the other containers so they are nice and ready, both dependencies and other dev containers. 
@@ -98,6 +103,8 @@ https://blog.johnnyreilly.com/2021/05/15/azurite-and-table-storage-dev-container
 Creating the dev container *first* allows you to use an image with the functions cli already installed.
 For .Net 5 and Functions, there is no pre-built image, but there is this handy dockerfile: https://github.com/Azure/azure-functions-docker/blob/dev/host/3.0/buster/amd64/dotnet/dotnet-isolated/dotnet-isolated-core-tools.Dockerfile. However, it turns out the core tools also require netcoreapp 3.1 so I have added that to the Dockerfile. 
 
+# Cosmos DB
+The Linux emulator here is in preview and is limited. We are back to the joy of certificates. I have avodied that (so far) in this code by setting some dangerous options to use Gateway mode and not checking SSL certs. That's not ideal and you may need to do the more complex things with certificates and IP addresses :( For the IP address, you will probably want to use docker-compose's network abilities to lock a specific IP address to that container, at least for the intra-container traffic, rather than doing it differently on each dev machine.
 
 
 
