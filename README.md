@@ -118,7 +118,7 @@ At the time of writing, `curl` is not installed on the emulator image, so I am u
 ## IP Address
 I was advised that it is important to give the Cosmos container a static IP, so I have done that in docker-compose. I am not convinced this is strictly true, though - it may only be to do with certificates. To be tested.
 
-# Certificates
+## Certificates
 
 ## Performance
 When I include the Cosmos image in my setup, my laptop fan comes on a fair bit and it does seem to consume a fair bit of memory and CPU, even when I am not talking to it at all. It is only in preview and your mileage may vary.
