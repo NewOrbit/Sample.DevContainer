@@ -106,5 +106,29 @@ For .Net 5 and Functions, there is no pre-built image, but there is this handy d
 # Cosmos DB
 The Linux emulator here is in preview and is limited. We are back to the joy of certificates. I have avodied that (so far) in this code by setting some dangerous options to use Gateway mode and not checking SSL certs. That's not ideal and you may need to do the more complex things with certificates and IP addresses :( For the IP address, you will probably want to use docker-compose's network abilities to lock a specific IP address to that container, at least for the intra-container traffic, rather than doing it differently on each dev machine.
 
+## CosmosDB Healthcheck
+Cosmos may take a little while to start up, so there is a healthcheck on cosmos in docker-compose which just uses `curl` to check if it is up. Services that rely on cosmos being up uses `depends_on` like this:
+```yml
+depends_on: 
+    cosmos:
+        condition: service_healthy
+```
+At the time of writing, `curl` is not installed on the emulator image, so I am using a Dockerfile to install it. I have kept everything else in docker-compose in the expectation that curl will be included in the emulator image in the future and thus allow the removal of the Dockerfile.cosmos.
+
+## IP Address
+I was advised that it is important to give the Cosmos container a static IP, so I have done that in docker-compose. I am not convinced this is strictly true, though - it may only be to do with certificates. To be tested.
+
+# Certificates
+
+## Performance
+When I include the Cosmos image in my setup, my laptop fan comes on a fair bit and it does seem to consume a fair bit of memory and CPU, even when I am not talking to it at all. It is only in preview and your mileage may vary.
+
+## Persistent storage
+There are things you can do to map volumes and persist data etc - see the docs if that is relevant to you.
 
 
+## Feedback to Azure team
+Curl is not installed by default, making the healthcheck a tad more complex to set up. I have solved it with a dockerfile to install it, but it may be worth adding curl to the image.
+
+I would *like* to access cosmos from my other containers using the docker-compose networking, i.e. "https://cosmos:8081/....". However, if I set AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=cosmos then cosmos fails to start (the healtcheck reports "connection refused").
+If I set AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=172.18.0.100 then it comes up okay, but the certificate is still issued to "localhost" so it is unlikely to work from other containers?

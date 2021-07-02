@@ -22,6 +22,9 @@ services:
             - func
             - azurite
             - cosmos
+        depends_on: 
+            cosmos:
+                condition: service_healthy
     func:
         build: ./src/func/.devcontainer
         volumes: 
@@ -32,6 +35,9 @@ services:
         links:
             - azurite
             - cosmos
+        depends_on: 
+            cosmos:
+                condition: service_healthy
     azurite:
         image: "mcr.microsoft.com/azure-storage/azurite"
         ports:
@@ -39,10 +45,28 @@ services:
             - "10001:10001"
             - "10002:10002"
     cosmos:
-        image: "mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator"
+        build:
+            context: .
+            dockerfile: Dockerfile.cosmos
         ports:
             - "8081:8081"
             - "10251:10251"
             - "10252:10252" 
             - "10253:10253"
             - "10254:10254"
+        environment: 
+            - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10
+            - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+            - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=172.18.0.100
+        networks: 
+            default:
+                ipv4_address: 172.18.0.100
+        healthcheck: 
+            test: ["CMD", "curl", "-k", "https://localhost:8081/_explorer/emulator.pem "]
+            start_period: 120s
+        deploy:
+            resources:
+                reservations:
+                    cpus: 2
+                    memory: 3g
+              
